@@ -23,5 +23,5 @@ interface NotesDao {
     fun getNote(id: Int): Flow<Note>
 
     @Query("SELECT * FROM notes ORDER BY title ASC")
-    fun getNotes(): Flow<Note>
+    fun getNotes(): Flow<List<Note>>
 }
