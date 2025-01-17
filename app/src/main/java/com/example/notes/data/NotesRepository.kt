@@ -4,14 +4,14 @@ import com.example.notes.database.Note
 import com.example.notes.database.NotesDao
 import kotlinx.coroutines.flow.Flow
 
-class NotesRepository(private val newsDao: NotesDao) {
-    fun getNotes(): Flow<List<Note>> = newsDao.getNotes()
+class NotesRepository(private val notesDao: NotesDao) {
+    fun getNotes(): Flow<List<Note>> = notesDao.getNotes()
 
-    fun getNote(id: Int): Flow<Note> = newsDao.getNote(id)
+    fun getNote(id: Int): Flow<Note> = notesDao.getNote(id)
 
-    suspend fun insertNote(note: Note) = newsDao.insert(note)
+    suspend fun insertNote(note: Note) = notesDao.insert(note)
 
-    suspend fun updateNote(note: Note) = newsDao.update(note)
+    suspend fun updateNote(note: Note) = notesDao.update(note)
 
-    suspend fun deleteNote(note: Note) = newsDao.delete(note)
+    suspend fun deleteNote(note: Note) = notesDao.delete(note)
 }
