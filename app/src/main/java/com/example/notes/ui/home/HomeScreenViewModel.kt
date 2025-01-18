@@ -3,18 +3,27 @@ package com.example.notes.ui.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.notes.data.NotesRepository
-import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.launch
 
 class HomeScreenViewModel(notesRepository: NotesRepository): ViewModel() {
-    val homeScreenUiState: StateFlow<HomeScreenUiState> =
-        notesRepository.getNotes().map { HomeScreenUiState(it) }
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(3000L),
-                initialValue = HomeScreenUiState()
-            )
+    private val _homeScreenUiState =
+        MutableStateFlow<HomeScreenUiState>(HomeScreenUiState())
+    val homeScreenUiState: StateFlow<HomeScreenUiState> = _homeScreenUiState
+
+
+    init {
+        viewModelScope.launch {
+            notesRepository.getNotes()
+                .catch {
+                    _homeScreenUiState.value = HomeScreenUiState()
+                }
+                .collect { notes ->
+                    _homeScreenUiState.value = HomeScreenUiState(notes)
+                }
+        }
+    }
 
 }
