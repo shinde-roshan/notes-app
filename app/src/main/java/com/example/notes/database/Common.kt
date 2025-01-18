@@ -1,6 +1,6 @@
 package com.example.notes.database
 
-enum class NotesColumn(column: String) {
+enum class NotesColumn(public val column: String) {
     TITLE("title"),
     CONTENT("content"),
     COLOR("color"),
@@ -13,7 +13,7 @@ enum class ReminderFrequency {
     HOURLY, DAILY, WEEKLY, BIWEEKLY, MONTHLY
 }
 
-enum class SortDirection(direction: String) {
+enum class SortDirection(public val direction: String) {
     ASCENDING("ASC"),
     DESCENDING("DESC")
 }
