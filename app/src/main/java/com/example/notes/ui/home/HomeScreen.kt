@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.notes.R
 import com.example.notes.database.Note
+import com.example.notes.database.NotesColumn
 import com.example.notes.database.SortDirection
 import com.example.notes.ui.AppViewModelProvider
 import com.example.notes.utils.toDateStr
@@ -40,15 +41,15 @@ fun HomeScreen(
         Row {
             SortButton(
                 label = stringResource(R.string.title),
-                isSelected = true,
-                direction = SortDirection.DESCENDING,
-                onClick = {}
+                isSelected = uiState.sortByColumn == NotesColumn.TITLE,
+                direction = uiState.sortDirection,
+                onClick = { viewModel.onSortButtonClicked(NotesColumn.TITLE) }
             )
             SortButton(
                 label = stringResource(R.string.date),
-                isSelected = false,
-                direction = SortDirection.ASCENDING,
-                onClick = {}
+                isSelected = uiState.sortByColumn == NotesColumn.TIMESTAMP,
+                direction = uiState.sortDirection,
+                onClick = { viewModel.onSortButtonClicked(NotesColumn.TIMESTAMP) }
             )
         }
         Notes(
