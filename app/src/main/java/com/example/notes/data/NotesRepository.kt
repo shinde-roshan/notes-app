@@ -11,7 +11,7 @@ class NotesRepository(private val notesDao: NotesDao) {
         column: NotesColumn = NotesColumn.TITLE,
         sortDirection: SortDirection = SortDirection.ASCENDING
     ): Flow<List<Note>> {
-        return return when (column) {
+        return when (column) {
             NotesColumn.TITLE -> {
                 if (sortDirection == SortDirection.DESCENDING) {
                     notesDao.getNotesSortedByTitleDesc()
@@ -19,6 +19,7 @@ class NotesRepository(private val notesDao: NotesDao) {
                     notesDao.getNotesSortedByTitleAsc()
                 }
             }
+
             NotesColumn.TIMESTAMP -> {
                 if (sortDirection == SortDirection.DESCENDING) {
                     notesDao.getNotesSortedByTimestampDesc()
@@ -26,6 +27,7 @@ class NotesRepository(private val notesDao: NotesDao) {
                     notesDao.getNotesSortedByTimestampAsc()
                 }
             }
+
             else -> notesDao.getNotesSortedByTitleAsc() // Default fallback
         }
     }
