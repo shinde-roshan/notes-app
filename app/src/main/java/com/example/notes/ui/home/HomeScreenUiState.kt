@@ -8,5 +8,8 @@ data class HomeScreenUiState(
     val notes: List<Note> = listOf(),
     var sortByColumn: NotesColumn = NotesColumn.TITLE,
     var titleSortDirection: SortDirection = SortDirection.ASCENDING,
-    var timeStampSortDirection: SortDirection = SortDirection.ASCENDING
+    var timeStampSortDirection: SortDirection = SortDirection.ASCENDING,
+    var viewMode: ViewMode = ViewMode.STAGGERED_GRID
 )
+
+enum class ViewMode { LINEAR_LIST, STAGGERED_GRID }

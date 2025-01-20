@@ -66,4 +66,13 @@ class HomeScreenViewModel(private val notesRepository: NotesRepository) : ViewMo
         }
     }
 
+    fun toggleViewMode() {
+        _homeScreenUiState.value = _homeScreenUiState.value.copy(
+            viewMode = when(_homeScreenUiState.value.viewMode) {
+                ViewMode.STAGGERED_GRID -> ViewMode.LINEAR_LIST
+                else -> ViewMode.STAGGERED_GRID
+            }
+        )
+    }
+
 }

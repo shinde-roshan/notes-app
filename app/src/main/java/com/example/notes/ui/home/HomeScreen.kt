@@ -1,14 +1,20 @@
 package com.example.notes.ui.home
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -38,7 +44,9 @@ fun HomeScreen(
     Column(
         modifier = modifier
     ) {
-        Row {
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             SortButton(
                 label = stringResource(R.string.title),
                 isSelected = uiState.sortByColumn == NotesColumn.TITLE,
@@ -51,6 +59,22 @@ fun HomeScreen(
                 direction = uiState.timeStampSortDirection,
                 onClick = { viewModel.onSortButtonClicked(NotesColumn.TIMESTAMP) }
             )
+            Spacer(modifier = Modifier.weight(1f))
+            IconButton(
+                onClick = { viewModel.toggleViewMode() }
+            ) {
+                Icon(
+                    painter = when (uiState.viewMode) {
+                        ViewMode.LINEAR_LIST -> painterResource(R.drawable.ic_view_grid)
+                        else -> painterResource(R.drawable.ic_view_list)
+                    },
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    contentDescription = when (uiState.viewMode) {
+                        ViewMode.LINEAR_LIST -> stringResource(R.string.grid_view)
+                        else -> stringResource(R.string.list_view)
+                    }
+                )
+            }
         }
         Notes(
             uiState = uiState
@@ -98,14 +122,27 @@ fun Notes(
     uiState: HomeScreenUiState,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn(modifier = modifier) {
-        items(uiState.notes) { note ->
-            NoteItem(
-                note = note,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(dimensionResource(R.dimen.dp_8))
-            )
+    if (uiState.viewMode == ViewMode.LINEAR_LIST) {
+        LazyColumn(modifier = modifier) {
+            items(uiState.notes) { note ->
+                NoteItem(
+                    note = note,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(dimensionResource(R.dimen.dp_8))
+                )
+            }
+        }
+    } else {
+        LazyVerticalStaggeredGrid(
+            columns = StaggeredGridCells.Fixed(2),
+            verticalItemSpacing = dimensionResource(R.dimen.dp_8),
+            horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.dp_8)),
+            modifier = modifier.padding(dimensionResource(R.dimen.dp_8))
+        ) {
+            items(uiState.notes) { note ->
+                NoteItem(note = note)
+            }
         }
     }
 }
