@@ -20,12 +20,14 @@ class HomeScreenViewModel(private val notesRepository: NotesRepository) : ViewMo
         getNotes()
     }
 
-    private fun getNotes()
-    {
+    private fun getNotes() {
         viewModelScope.launch {
             notesRepository.getNotes(
                 column = _homeScreenUiState.value.sortByColumn,
-                sortDirection = _homeScreenUiState.value.sortDirection
+                sortDirection = when (_homeScreenUiState.value.sortByColumn) {
+                    NotesColumn.TIMESTAMP -> _homeScreenUiState.value.timeStampSortDirection
+                    else -> _homeScreenUiState.value.titleSortDirection
+                }
             )
                 .catch {
                     _homeScreenUiState.value = _homeScreenUiState.value.copy(
@@ -42,11 +44,26 @@ class HomeScreenViewModel(private val notesRepository: NotesRepository) : ViewMo
 
     fun onSortButtonClicked(column: NotesColumn) {
         if (column == _homeScreenUiState.value.sortByColumn) {
-            if (_homeScreenUiState.value.sortDirection == SortDirection.ASCENDING) {
-                _homeScreenUiState.value.sortDirection = SortDirection.DESCENDING
-            } else _homeScreenUiState.value.sortDirection = SortDirection.ASCENDING
+            when (column) {
+                NotesColumn.TIMESTAMP -> {
+                    _homeScreenUiState.value.timeStampSortDirection =
+                        toggleSortDirection(_homeScreenUiState.value.timeStampSortDirection)
+                }
+
+                else -> {
+                    _homeScreenUiState.value.titleSortDirection =
+                        toggleSortDirection(_homeScreenUiState.value.titleSortDirection)
+                }
+            }
         } else _homeScreenUiState.value.sortByColumn = column
         getNotes()
+    }
+
+    private fun toggleSortDirection(currSortDirection: SortDirection): SortDirection {
+        return when (currSortDirection) {
+            SortDirection.ASCENDING -> SortDirection.DESCENDING
+            else -> SortDirection.ASCENDING
+        }
     }
 
 }

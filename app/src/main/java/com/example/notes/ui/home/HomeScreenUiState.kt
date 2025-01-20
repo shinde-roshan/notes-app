@@ -7,5 +7,6 @@ import com.example.notes.database.SortDirection
 data class HomeScreenUiState(
     val notes: List<Note> = listOf(),
     var sortByColumn: NotesColumn = NotesColumn.TITLE,
-    var sortDirection: SortDirection = SortDirection.ASCENDING
+    var titleSortDirection: SortDirection = SortDirection.ASCENDING,
+    var timeStampSortDirection: SortDirection = SortDirection.ASCENDING
 )

@@ -42,13 +42,13 @@ fun HomeScreen(
             SortButton(
                 label = stringResource(R.string.title),
                 isSelected = uiState.sortByColumn == NotesColumn.TITLE,
-                direction = uiState.sortDirection,
+                direction = uiState.titleSortDirection,
                 onClick = { viewModel.onSortButtonClicked(NotesColumn.TITLE) }
             )
             SortButton(
                 label = stringResource(R.string.date),
                 isSelected = uiState.sortByColumn == NotesColumn.TIMESTAMP,
-                direction = uiState.sortDirection,
+                direction = uiState.timeStampSortDirection,
                 onClick = { viewModel.onSortButtonClicked(NotesColumn.TIMESTAMP) }
             )
         }
