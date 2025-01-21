@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,6 +18,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -28,6 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.notes.AppBar
 import com.example.notes.R
 import com.example.notes.database.Note
 import com.example.notes.database.NotesColumn
@@ -43,48 +46,53 @@ object HomeDestination: NavigationDestination {
 
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier,
     viewModel: HomeScreenViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val uiState by viewModel.homeScreenUiState.collectAsState()
-    Column(
-        modifier = modifier
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically
+
+    Scaffold(
+        topBar = { AppBar() },
+        modifier = Modifier.fillMaxSize()
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier.padding(innerPadding)
         ) {
-            SortButton(
-                label = stringResource(R.string.title),
-                isSelected = uiState.sortByColumn == NotesColumn.TITLE,
-                direction = uiState.titleSortDirection,
-                onClick = { viewModel.onSortButtonClicked(NotesColumn.TITLE) }
-            )
-            SortButton(
-                label = stringResource(R.string.date),
-                isSelected = uiState.sortByColumn == NotesColumn.TIMESTAMP,
-                direction = uiState.timeStampSortDirection,
-                onClick = { viewModel.onSortButtonClicked(NotesColumn.TIMESTAMP) }
-            )
-            Spacer(modifier = Modifier.weight(1f))
-            IconButton(
-                onClick = { viewModel.toggleViewMode() }
+            Row(
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(
-                    painter = when (uiState.viewMode) {
-                        ViewMode.LINEAR_LIST -> painterResource(R.drawable.ic_view_grid)
-                        else -> painterResource(R.drawable.ic_view_list)
-                    },
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    contentDescription = when (uiState.viewMode) {
-                        ViewMode.LINEAR_LIST -> stringResource(R.string.grid_view)
-                        else -> stringResource(R.string.list_view)
-                    }
+                SortButton(
+                    label = stringResource(R.string.title),
+                    isSelected = uiState.sortByColumn == NotesColumn.TITLE,
+                    direction = uiState.titleSortDirection,
+                    onClick = { viewModel.onSortButtonClicked(NotesColumn.TITLE) }
                 )
+                SortButton(
+                    label = stringResource(R.string.date),
+                    isSelected = uiState.sortByColumn == NotesColumn.TIMESTAMP,
+                    direction = uiState.timeStampSortDirection,
+                    onClick = { viewModel.onSortButtonClicked(NotesColumn.TIMESTAMP) }
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                IconButton(
+                    onClick = { viewModel.toggleViewMode() }
+                ) {
+                    Icon(
+                        painter = when (uiState.viewMode) {
+                            ViewMode.LINEAR_LIST -> painterResource(R.drawable.ic_view_grid)
+                            else -> painterResource(R.drawable.ic_view_list)
+                        },
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        contentDescription = when (uiState.viewMode) {
+                            ViewMode.LINEAR_LIST -> stringResource(R.string.grid_view)
+                            else -> stringResource(R.string.list_view)
+                        }
+                    )
+                }
             }
+            Notes(
+                uiState = uiState
+            )
         }
-        Notes(
-            uiState = uiState
-        )
     }
 }
 
