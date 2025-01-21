@@ -33,7 +33,13 @@ import com.example.notes.database.Note
 import com.example.notes.database.NotesColumn
 import com.example.notes.database.SortDirection
 import com.example.notes.ui.AppViewModelProvider
+import com.example.notes.ui.navigation.NavigationDestination
 import com.example.notes.utils.toDateStr
+
+object HomeDestination: NavigationDestination {
+    override val route: String = "home"
+    override val titleRes: Int = R.string.app_name
+}
 
 @Composable
 fun HomeScreen(
