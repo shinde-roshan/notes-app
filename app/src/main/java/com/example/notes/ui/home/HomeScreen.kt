@@ -1,5 +1,6 @@
 package com.example.notes.ui.home
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -41,6 +42,7 @@ import com.example.notes.utils.toDateStr
 
 @Composable
 fun HomeScreen(
+    navigateToNoteDetails: (Int) -> Unit,
     viewModel: HomeScreenViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val uiState by viewModel.homeScreenUiState.collectAsState()
@@ -90,7 +92,8 @@ fun HomeScreen(
                 }
             }
             Notes(
-                uiState = uiState
+                uiState = uiState,
+                onItemClicked = navigateToNoteDetails
             )
         }
     }
@@ -134,6 +137,7 @@ fun SortButton(
 @Composable
 fun Notes(
     uiState: HomeScreenUiState,
+    onItemClicked: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     if (uiState.viewMode == ViewMode.LINEAR_LIST) {
@@ -144,6 +148,7 @@ fun Notes(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(dimensionResource(R.dimen.dp_8))
+                        .clickable { onItemClicked(note.id) }
                 )
             }
         }
@@ -155,7 +160,10 @@ fun Notes(
             modifier = modifier.padding(dimensionResource(R.dimen.dp_8))
         ) {
             items(uiState.notes) { note ->
-                NoteItem(note = note)
+                NoteItem(
+                    note = note,
+                    modifier = Modifier.clickable { onItemClicked(note.id) }
+                )
             }
         }
     }
