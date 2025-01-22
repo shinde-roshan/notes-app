@@ -5,7 +5,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.notes.ui.home.HomeDestination
 import com.example.notes.ui.home.HomeScreen
 
 @Composable
@@ -15,10 +14,10 @@ fun NotesNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = HomeDestination.route,
+        startDestination = Home,
         modifier = modifier
     ) {
-        composable(HomeDestination.route) {
+        composable<Home> {
             HomeScreen()
         }
     }
