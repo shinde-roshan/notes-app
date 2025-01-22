@@ -28,7 +28,10 @@ fun NotesNavHost(
         }
         composable<NoteDetails> { navBackStackEntry ->
             val noteDetails: NoteDetails = navBackStackEntry.toRoute()
-            NoteDetailsScreen(noteDetails.noteId)
+            NoteDetailsScreen(
+                noteId = noteDetails.noteId,
+                navigateUp = { navController.navigateUp() }
+            )
         }
     }
 }
