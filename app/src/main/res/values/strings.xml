@@ -9,5 +9,9 @@
 
 <!--    Note Details-->
     <string name="delete">Delete</string>
+    <string name="confirm">Confirm</string>
+    <string name="delete_confirm_message">Are you sure you want to delete this note?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
 </resources>
