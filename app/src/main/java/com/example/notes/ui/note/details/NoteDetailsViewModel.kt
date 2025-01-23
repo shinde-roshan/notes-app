@@ -32,6 +32,14 @@ class NoteDetailsViewModel(private val notesRepository: NotesRepository) : ViewM
         }
     }
 
+    fun deleteNote() {
+        viewModelScope.launch {
+            _noteDetailsUiState.value.note?.let {
+                notesRepository.deleteNote(it)
+            }
+        }
+    }
+
     fun setNoteId(id: Int) {
         noteId = id
         getNote()

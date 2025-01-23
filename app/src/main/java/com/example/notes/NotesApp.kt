@@ -1,5 +1,6 @@
 package com.example.notes
 
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -27,7 +28,8 @@ fun AppBar(
     title: String,
     canNavigateBack: Boolean,
     modifier: Modifier = Modifier,
-    navigateUp: () -> Unit = {}
+    navigateUp: () -> Unit = {},
+    actions: @Composable() (RowScope.() -> Unit) = {}
 ) {
     TopAppBar(
         title = {
@@ -48,6 +50,7 @@ fun AppBar(
                     )
                 }
             }
-        }
+        },
+        actions = actions
     )
 }

@@ -1,7 +1,13 @@
 <resources>
+
+<!--    Home Screen-->
     <string name="app_name">Notes</string>
     <string name="title">Title</string>
     <string name="date">Date</string>
     <string name="list_view">List View</string>
     <string name="grid_view">Grid View</string>
+
+<!--    Note Details-->
+    <string name="delete">Delete</string>
+
 </resources>
