@@ -28,6 +28,7 @@ import com.example.notes.utils.toDateStr
 fun NoteDetailsScreen(
     noteId: Int,
     navigateUp: () -> Unit,
+    navigateBack: () -> Unit,
     viewModel: NoteDetailsViewModel = viewModel(factory = AppViewModelProvider.Factory),
     modifier: Modifier = Modifier
 ) {
@@ -43,7 +44,9 @@ fun NoteDetailsScreen(
                 actions = {
                     IconButton(
                         onClick = {
-                            viewModel.deleteNote()
+                            viewModel.deleteNote {
+                                navigateBack()
+                            }
                         }
                     ) {
                         Icon(

@@ -32,10 +32,11 @@ class NoteDetailsViewModel(private val notesRepository: NotesRepository) : ViewM
         }
     }
 
-    fun deleteNote() {
+    fun deleteNote(callback: () -> Unit) {
         viewModelScope.launch {
             _noteDetailsUiState.value.note?.let {
                 notesRepository.deleteNote(it)
+                callback()
             }
         }
     }

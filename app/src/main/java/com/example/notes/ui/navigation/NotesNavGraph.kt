@@ -30,7 +30,8 @@ fun NotesNavHost(
             val noteDetails: NoteDetails = navBackStackEntry.toRoute()
             NoteDetailsScreen(
                 noteId = noteDetails.noteId,
-                navigateUp = { navController.navigateUp() }
+                navigateUp = { navController.navigateUp() },
+                navigateBack = { navController.popBackStack() }
             )
         }
     }
