@@ -46,6 +46,7 @@ import com.example.notes.utils.toDateStr
 @Composable
 fun HomeScreen(
     navigateToNoteDetails: (Int) -> Unit,
+    navigateToCreateNote: () -> Unit,
     viewModel: HomeScreenViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val uiState by viewModel.homeScreenUiState.collectAsState()
@@ -59,7 +60,7 @@ fun HomeScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {}
+                onClick = { navigateToCreateNote() }
             ) {
                 Icon(
                     imageVector = Icons.TwoTone.Add,

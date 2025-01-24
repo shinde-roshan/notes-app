@@ -7,3 +7,6 @@ object Home
 
 @Serializable
 data class NoteDetails(val noteId: Int)
+
+@Serializable
+object NoteCreate
