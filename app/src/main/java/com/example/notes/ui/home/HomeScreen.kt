@@ -13,8 +13,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.twotone.Add
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -53,6 +56,16 @@ fun HomeScreen(
                 title = stringResource(R.string.app_name),
                 canNavigateBack = false
             )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {}
+            ) {
+                Icon(
+                    imageVector = Icons.TwoTone.Add,
+                    contentDescription = stringResource(R.string.create_new_note)
+                )
+            }
         },
         modifier = Modifier.fillMaxSize()
     ) { innerPadding ->
