@@ -9,4 +9,4 @@ object Home
 data class NoteDetails(val noteId: Int)
 
 @Serializable
-object NoteCreate
+object CreateNote

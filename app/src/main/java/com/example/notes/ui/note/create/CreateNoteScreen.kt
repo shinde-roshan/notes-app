@@ -11,7 +11,7 @@ import androidx.compose.ui.res.dimensionResource
 import com.example.notes.R
 
 @Composable
-fun NoteCreateScreen(
+fun CreateNoteScreen(
     modifier: Modifier = Modifier,
     navigateUp: () -> Unit = {},
     navigateBack: () -> Unit = {}
