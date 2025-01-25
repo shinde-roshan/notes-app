@@ -6,6 +6,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.notes.NotesApplication
 import com.example.notes.ui.home.HomeScreenViewModel
+import com.example.notes.ui.note.create.CreateNoteViewModel
 import com.example.notes.ui.note.details.NoteDetailsViewModel
 
 object AppViewModelProvider {
@@ -15,6 +16,9 @@ object AppViewModelProvider {
         }
         initializer {
             NoteDetailsViewModel(notesApplication().container.notesRepository)
+        }
+        initializer {
+            CreateNoteViewModel(notesApplication().container.notesRepository)
         }
     }
 }
