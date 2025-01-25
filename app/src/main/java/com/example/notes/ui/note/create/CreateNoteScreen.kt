@@ -67,7 +67,7 @@ fun CreateNoteScreen(
         ) {
             NoteTitle(
                 text = uiState.titleText,
-                errorMessage = uiState.titleErrorMsg,
+                errorMessage = uiState.titleErrorMsgRes,
                 onTextChanged = { newText -> viewModel.onTitleTextChanged(newText) },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -91,7 +91,7 @@ fun CreateNoteScreen(
 @Composable
 fun NoteTitle(
     text: String,
-    errorMessage: String,
+    errorMessage: Int?,
     onTextChanged: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -110,7 +110,7 @@ fun NoteTitle(
                     )
                 )
             },
-            isError = errorMessage.isNotEmpty(),
+            isError = errorMessage != null,
             textStyle = MaterialTheme.typography.headlineSmall,
             colors = TextFieldDefaults
                 .colors()
@@ -124,9 +124,9 @@ fun NoteTitle(
             modifier = Modifier.fillMaxWidth()
         )
 
-        if (errorMessage.isNotEmpty()) {
+        if (errorMessage != null) {
             Text(
-                text = errorMessage,
+                text = stringResource(errorMessage),
                 color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier

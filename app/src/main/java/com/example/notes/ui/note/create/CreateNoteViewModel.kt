@@ -12,7 +12,7 @@ class CreateNoteViewModel(private val notesRepository: NotesRepository) : ViewMo
     fun onTitleTextChanged(text: String) {
         _createNoteUiState.value = _createNoteUiState.value.copy(
             titleText = text,
-            titleErrorMsg = ""
+            titleErrorMsgRes = null
         )
     }
 
