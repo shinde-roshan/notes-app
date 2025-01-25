@@ -8,4 +8,17 @@ import com.example.notes.data.NotesRepository
 class CreateNoteViewModel(private val notesRepository: NotesRepository) : ViewModel() {
     private var _createNoteUiState = mutableStateOf(CreateNoteUiState())
     val createNoteUiState: State<CreateNoteUiState> = _createNoteUiState
+
+    fun onTitleTextChanged(text: String) {
+        _createNoteUiState.value = _createNoteUiState.value.copy(
+            titleText = text,
+            titleErrorMsg = ""
+        )
+    }
+
+    fun onContentTextChanged(text: String) {
+        _createNoteUiState.value = _createNoteUiState.value.copy(
+            contentText = text
+        )
+    }
 }

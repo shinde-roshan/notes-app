@@ -14,5 +14,9 @@
     <string name="delete_confirm_message">Are you sure you want to delete this note?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    
+<!--    Create Note-->
+    <string name="note_title">Note Title</string>
+    <string name="type_something">Type something…</string>
 
 </resources>
