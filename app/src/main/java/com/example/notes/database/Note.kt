@@ -6,11 +6,11 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "notes")
 data class Note(
-    @PrimaryKey(autoGenerate = true) val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int = -1,
     val title: String,
     val content: String,
-    val color: String,
-    val timestamp: Long,
-    @ColumnInfo(name = "remind_at") val remindAt: Long,
-    @ColumnInfo(name = "reminder_frequency") val reminderFrequency: ReminderFrequency
+    val color: String = "",
+    val timestamp: Long = System.currentTimeMillis(),
+    @ColumnInfo(name = "remind_at") val remindAt: Long? = null,
+    @ColumnInfo(name = "reminder_frequency") val reminderFrequency: ReminderFrequency? = null
 )
