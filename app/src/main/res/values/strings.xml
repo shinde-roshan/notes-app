@@ -18,6 +18,7 @@
 <!--    Create Note-->
     <string name="note_title">Note Title</string>
     <string name="type_something">Type something…</string>
+    <string name="title_empty_warning">Title cannot be empty!</string>
     <string name="done">Done</string>
 
 </resources>

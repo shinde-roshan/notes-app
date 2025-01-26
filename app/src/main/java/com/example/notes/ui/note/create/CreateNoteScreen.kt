@@ -46,7 +46,11 @@ fun CreateNoteScreen(
                 navigateUp = navigateUp,
                 actions = {
                     IconButton(
-                        onClick = { }
+                        onClick = {
+                            viewModel.saveNote {
+                                navigateBack()
+                            }
+                        }
                     ) {
                         Icon(
                             imageVector = Icons.TwoTone.Done,
