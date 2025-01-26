@@ -32,6 +32,7 @@ import com.example.notes.ui.AppViewModelProvider
 @Composable
 fun EditNoteScreen(
     modifier: Modifier = Modifier,
+    noteId: Int? = null,
     navigateUp: () -> Unit = {},
     navigateBack: () -> Unit = {},
     viewModel: EditNoteViewModel = viewModel(factory = AppViewModelProvider.Factory)

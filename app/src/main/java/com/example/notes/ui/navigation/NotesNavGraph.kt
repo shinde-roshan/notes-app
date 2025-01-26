@@ -26,7 +26,7 @@ fun NotesNavHost(
                     navController.navigate(NoteDetails(noteId))
                 },
                 navigateToCreateNote = {
-                    navController.navigate(EditNote)
+                    navController.navigate(EditNote())
                 }
             )
         }
@@ -34,12 +34,15 @@ fun NotesNavHost(
             val noteDetails: NoteDetails = navBackStackEntry.toRoute()
             NoteDetailsScreen(
                 noteId = noteDetails.noteId,
+                navigateToEditNote = { noteId -> navController.navigate(EditNote(noteId)) },
                 navigateUp = { navController.navigateUp() },
                 navigateBack = { navController.popBackStack() }
             )
         }
-        composable<EditNote> {
+        composable<EditNote> { navBackStackEntry ->
+            val editNote: EditNote = navBackStackEntry.toRoute()
             EditNoteScreen(
+                noteId = editNote.noteId,
                 navigateUp = { navController.navigateUp() },
                 navigateBack = { navController.popBackStack() }
             )

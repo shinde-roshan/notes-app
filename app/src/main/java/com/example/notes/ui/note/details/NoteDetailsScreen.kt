@@ -7,6 +7,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.Delete
+import androidx.compose.material.icons.twotone.Edit
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -33,6 +34,7 @@ import com.example.notes.utils.toDateStr
 @Composable
 fun NoteDetailsScreen(
     noteId: Int,
+    navigateToEditNote: (Int) -> Unit,
     navigateUp: () -> Unit,
     navigateBack: () -> Unit,
     viewModel: NoteDetailsViewModel = viewModel(factory = AppViewModelProvider.Factory),
@@ -49,6 +51,14 @@ fun NoteDetailsScreen(
                 canNavigateBack = true,
                 navigateUp = navigateUp,
                 actions = {
+                    IconButton(
+                        onClick = { uiState.value.note?.let { navigateToEditNote(it.id) } }
+                    ) {
+                        Icon(
+                            imageVector = Icons.TwoTone.Edit,
+                            contentDescription = stringResource(R.string.edit)
+                        )
+                    }
                     IconButton(
                         onClick = { showDeleteDialog = true }
                     ) {
