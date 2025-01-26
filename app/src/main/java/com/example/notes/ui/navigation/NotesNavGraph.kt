@@ -7,7 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.example.notes.ui.home.HomeScreen
-import com.example.notes.ui.note.create.CreateNoteScreen
+import com.example.notes.ui.note.edit.EditNoteScreen
 import com.example.notes.ui.note.details.NoteDetailsScreen
 
 @Composable
@@ -26,7 +26,7 @@ fun NotesNavHost(
                     navController.navigate(NoteDetails(noteId))
                 },
                 navigateToCreateNote = {
-                    navController.navigate(CreateNote)
+                    navController.navigate(EditNote)
                 }
             )
         }
@@ -38,8 +38,8 @@ fun NotesNavHost(
                 navigateBack = { navController.popBackStack() }
             )
         }
-        composable<CreateNote> {
-            CreateNoteScreen(
+        composable<EditNote> {
+            EditNoteScreen(
                 navigateUp = { navController.navigateUp() },
                 navigateBack = { navController.popBackStack() }
             )

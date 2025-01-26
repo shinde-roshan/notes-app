@@ -1,4 +1,4 @@
-package com.example.notes.ui.note.create
+package com.example.notes.ui.note.edit
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -30,13 +30,13 @@ import com.example.notes.R
 import com.example.notes.ui.AppViewModelProvider
 
 @Composable
-fun CreateNoteScreen(
+fun EditNoteScreen(
     modifier: Modifier = Modifier,
     navigateUp: () -> Unit = {},
     navigateBack: () -> Unit = {},
-    viewModel: CreateNoteViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    viewModel: EditNoteViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
-    val uiState = viewModel.createNoteUiState.value
+    val uiState = viewModel.editNoteUiState.value
 
     Scaffold(
         topBar = {

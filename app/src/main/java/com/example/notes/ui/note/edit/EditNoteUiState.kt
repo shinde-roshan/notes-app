@@ -1,15 +1,15 @@
-package com.example.notes.ui.note.create
+package com.example.notes.ui.note.edit
 
 import androidx.annotation.StringRes
 import com.example.notes.database.Note
 
-data class CreateNoteUiState(
+data class EditNoteUiState(
     val titleText: String = "",
     val contentText: String = "",
     @StringRes val titleErrorMsgRes: Int? = null
 )
 
-fun CreateNoteUiState.toNote(): Note {
+fun EditNoteUiState.toNote(): Note {
     return Note(
         title = titleText,
         content = contentText

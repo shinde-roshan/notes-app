@@ -1,4 +1,4 @@
-package com.example.notes.ui.note.create
+package com.example.notes.ui.note.edit
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -8,26 +8,26 @@ import com.example.notes.R
 import com.example.notes.data.NotesRepository
 import kotlinx.coroutines.launch
 
-class CreateNoteViewModel(private val notesRepository: NotesRepository) : ViewModel() {
-    private var _createNoteUiState = mutableStateOf(CreateNoteUiState())
-    val createNoteUiState: State<CreateNoteUiState> = _createNoteUiState
+class EditNoteViewModel(private val notesRepository: NotesRepository) : ViewModel() {
+    private var _editNoteUiState = mutableStateOf(EditNoteUiState())
+    val editNoteUiState: State<EditNoteUiState> = _editNoteUiState
 
     fun onTitleTextChanged(text: String) {
-        _createNoteUiState.value = _createNoteUiState.value.copy(
+        _editNoteUiState.value = _editNoteUiState.value.copy(
             titleText = text,
             titleErrorMsgRes = null
         )
     }
 
     fun onContentTextChanged(text: String) {
-        _createNoteUiState.value = _createNoteUiState.value.copy(
+        _editNoteUiState.value = _editNoteUiState.value.copy(
             contentText = text
         )
     }
 
     private fun isInputValid(): Boolean {
-        if (_createNoteUiState.value.titleText.isEmpty()) {
-            _createNoteUiState.value = _createNoteUiState.value.copy(
+        if (_editNoteUiState.value.titleText.isEmpty()) {
+            _editNoteUiState.value = _editNoteUiState.value.copy(
                 titleErrorMsgRes = R.string.title_empty_warning
             )
             return false
@@ -37,7 +37,7 @@ class CreateNoteViewModel(private val notesRepository: NotesRepository) : ViewMo
 
     fun saveNote(callback: () -> Unit) {
         if (isInputValid()) {
-            val note = _createNoteUiState.value.toNote()
+            val note = _editNoteUiState.value.toNote()
             viewModelScope.launch {
                 notesRepository.insertNote(note)
                 callback()
