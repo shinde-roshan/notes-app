@@ -1,16 +1,28 @@
 package com.example.notes.ui.note.edit
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.notes.R
 import com.example.notes.data.NotesRepository
 import kotlinx.coroutines.launch
 
-class EditNoteViewModel(private val notesRepository: NotesRepository) : ViewModel() {
+class EditNoteViewModel(
+    private val notesRepository: NotesRepository,
+    savedStateHandle: SavedStateHandle
+) : ViewModel() {
+
+    private val noteId: Int? = savedStateHandle["noteId"]
+
     private var _editNoteUiState = mutableStateOf(EditNoteUiState())
     val editNoteUiState: State<EditNoteUiState> = _editNoteUiState
+
+    init {
+        Log.d("id", noteId.toString())
+    }
 
     fun onTitleTextChanged(text: String) {
         _editNoteUiState.value = _editNoteUiState.value.copy(
