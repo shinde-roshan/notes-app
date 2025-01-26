@@ -9,8 +9,11 @@ data class EditNoteUiState(
     @StringRes val titleErrorMsgRes: Int? = null
 )
 
-fun EditNoteUiState.toNote(): Note {
-    return Note(
+fun EditNoteUiState.toNote(note: Note? = null): Note {
+    return note?.copy(
+        title = titleText,
+        content = contentText
+    ) ?: Note(
         title = titleText,
         content = contentText
     )
