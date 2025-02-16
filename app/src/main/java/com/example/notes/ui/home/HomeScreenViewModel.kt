@@ -6,6 +6,7 @@ import com.example.notes.data.NotesRepository
 import com.example.notes.data.UserPreferencesRepository
 import com.example.notes.database.NotesColumn
 import com.example.notes.database.SortDirection
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -19,6 +20,7 @@ class HomeScreenViewModel(
     private val _homeScreenUiState = MutableStateFlow(HomeScreenUiState())
     val homeScreenUiState: StateFlow<HomeScreenUiState> = _homeScreenUiState
 
+    private var jobCurrNotesFlow: Job? = null
 
     init {
         getUserPreferences()
@@ -37,7 +39,11 @@ class HomeScreenViewModel(
     }
 
     private fun getNotes() {
-        viewModelScope.launch {
+        //to avoid creating multiple active collectors
+        //flow collects emitted values until the launched coroutine is active
+        jobCurrNotesFlow?.cancel()
+
+        jobCurrNotesFlow = viewModelScope.launch {
             notesRepository.getNotes(
                 column = _homeScreenUiState.value.sortByColumn,
                 sortDirection = when (_homeScreenUiState.value.sortByColumn) {
