@@ -70,45 +70,49 @@ fun HomeScreen(
         },
         modifier = Modifier.fillMaxSize()
     ) { innerPadding ->
-        Column(
-            modifier = Modifier.padding(innerPadding)
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
+        if (uiState.notes.isNotEmpty()) {
+            Column(
+                modifier = Modifier.padding(innerPadding)
             ) {
-                SortButton(
-                    label = stringResource(R.string.title),
-                    isSelected = uiState.sortByColumn == NotesColumn.TITLE,
-                    direction = uiState.titleSortDirection,
-                    onClick = { viewModel.onSortButtonClicked(NotesColumn.TITLE) }
-                )
-                SortButton(
-                    label = stringResource(R.string.date),
-                    isSelected = uiState.sortByColumn == NotesColumn.TIMESTAMP,
-                    direction = uiState.timeStampSortDirection,
-                    onClick = { viewModel.onSortButtonClicked(NotesColumn.TIMESTAMP) }
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                IconButton(
-                    onClick = { viewModel.toggleViewMode() }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(
-                        painter = when (uiState.viewMode) {
-                            ViewMode.LINEAR_LIST -> painterResource(R.drawable.ic_view_grid)
-                            else -> painterResource(R.drawable.ic_view_list)
-                        },
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        contentDescription = when (uiState.viewMode) {
-                            ViewMode.LINEAR_LIST -> stringResource(R.string.grid_view)
-                            else -> stringResource(R.string.list_view)
-                        }
-                    )
+                    if (uiState.notes.size > 1) {
+                        SortButton(
+                            label = stringResource(R.string.title),
+                            isSelected = uiState.sortByColumn == NotesColumn.TITLE,
+                            direction = uiState.titleSortDirection,
+                            onClick = { viewModel.onSortButtonClicked(NotesColumn.TITLE) }
+                        )
+                        SortButton(
+                            label = stringResource(R.string.date),
+                            isSelected = uiState.sortByColumn == NotesColumn.TIMESTAMP,
+                            direction = uiState.timeStampSortDirection,
+                            onClick = { viewModel.onSortButtonClicked(NotesColumn.TIMESTAMP) }
+                        )
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
+                    IconButton(
+                        onClick = { viewModel.toggleViewMode() }
+                    ) {
+                        Icon(
+                            painter = when (uiState.viewMode) {
+                                ViewMode.LINEAR_LIST -> painterResource(R.drawable.ic_view_grid)
+                                else -> painterResource(R.drawable.ic_view_list)
+                            },
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            contentDescription = when (uiState.viewMode) {
+                                ViewMode.LINEAR_LIST -> stringResource(R.string.grid_view)
+                                else -> stringResource(R.string.list_view)
+                            }
+                        )
+                    }
                 }
+                Notes(
+                    uiState = uiState,
+                    onItemClicked = navigateToNoteDetails
+                )
             }
-            Notes(
-                uiState = uiState,
-                onItemClicked = navigateToNoteDetails
-            )
         }
     }
 }
