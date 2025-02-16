@@ -13,7 +13,10 @@ import com.example.notes.ui.note.details.NoteDetailsViewModel
 object AppViewModelProvider {
     val Factory = viewModelFactory {
         initializer {
-            HomeScreenViewModel(notesApplication().container.notesRepository)
+            HomeScreenViewModel(
+                notesApplication().container.notesRepository,
+                notesApplication().container.userPreferencesRepository
+            )
         }
         initializer {
             NoteDetailsViewModel(notesApplication().container.notesRepository)

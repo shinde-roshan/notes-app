@@ -3,6 +3,7 @@ package com.example.notes.ui.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.notes.data.NotesRepository
+import com.example.notes.data.UserPreferencesRepository
 import com.example.notes.database.NotesColumn
 import com.example.notes.database.SortDirection
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,7 +11,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
-class HomeScreenViewModel(private val notesRepository: NotesRepository) : ViewModel() {
+class HomeScreenViewModel(
+    private val notesRepository: NotesRepository,
+    private val userPreferencesRepository: UserPreferencesRepository
+) : ViewModel() {
     private val _homeScreenUiState =
         MutableStateFlow<HomeScreenUiState>(HomeScreenUiState())
     val homeScreenUiState: StateFlow<HomeScreenUiState> = _homeScreenUiState
