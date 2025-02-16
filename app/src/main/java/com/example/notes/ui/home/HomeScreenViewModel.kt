@@ -9,14 +9,14 @@ import com.example.notes.database.SortDirection
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class HomeScreenViewModel(
     private val notesRepository: NotesRepository,
     private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
-    private val _homeScreenUiState =
-        MutableStateFlow<HomeScreenUiState>(HomeScreenUiState())
+    private val _homeScreenUiState = MutableStateFlow(HomeScreenUiState())
     val homeScreenUiState: StateFlow<HomeScreenUiState> = _homeScreenUiState
 
 
@@ -45,13 +45,20 @@ class HomeScreenViewModel(
                     else -> _homeScreenUiState.value.titleSortDirection
                 }
             )
+                .onStart {
+                    _homeScreenUiState.value = _homeScreenUiState.value.copy(
+                        isLoading = true
+                    )
+                }
                 .catch {
                     _homeScreenUiState.value = _homeScreenUiState.value.copy(
+                        isLoading = false,
                         notes = listOf()
                     )
                 }
                 .collect { notes ->
                     _homeScreenUiState.value = _homeScreenUiState.value.copy(
+                        isLoading = false,
                         notes = notes
                     )
                 }

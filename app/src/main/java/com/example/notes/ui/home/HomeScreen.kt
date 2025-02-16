@@ -18,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.Add
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -72,64 +73,75 @@ fun HomeScreen(
         },
         modifier = Modifier.fillMaxSize()
     ) { innerPadding ->
-        if (uiState.notes.isNotEmpty()) {
-            Column(
-                modifier = Modifier.padding(innerPadding)
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    if (uiState.notes.size > 1) {
-                        SortButton(
-                            label = stringResource(R.string.title),
-                            isSelected = uiState.sortByColumn == NotesColumn.TITLE,
-                            direction = uiState.titleSortDirection,
-                            onClick = { viewModel.onSortButtonClicked(NotesColumn.TITLE) }
-                        )
-                        SortButton(
-                            label = stringResource(R.string.date),
-                            isSelected = uiState.sortByColumn == NotesColumn.TIMESTAMP,
-                            direction = uiState.timeStampSortDirection,
-                            onClick = { viewModel.onSortButtonClicked(NotesColumn.TIMESTAMP) }
-                        )
-                    }
-                    Spacer(modifier = Modifier.weight(1f))
-                    IconButton(
-                        onClick = { viewModel.toggleViewMode() }
-                    ) {
-                        Icon(
-                            painter = when (uiState.viewMode) {
-                                ViewMode.LINEAR_LIST -> painterResource(R.drawable.ic_view_grid)
-                                else -> painterResource(R.drawable.ic_view_list)
-                            },
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            contentDescription = when (uiState.viewMode) {
-                                ViewMode.LINEAR_LIST -> stringResource(R.string.grid_view)
-                                else -> stringResource(R.string.list_view)
-                            }
-                        )
-                    }
-                }
-                Notes(
-                    uiState = uiState,
-                    onItemClicked = navigateToNoteDetails
+        when {
+            uiState.isLoading -> {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .padding(innerPadding)
+                        .fillMaxSize()
+                        .wrapContentSize(Alignment.Center)
                 )
             }
-        } else {
-            Text(
-                text = stringResource(R.string.empty_notes_msg),
-                style = MaterialTheme.typography.bodyMedium,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .fillMaxSize()
-                    .wrapContentSize(Alignment.Center)
-                    .padding(
-                        bottom = dimensionResource(R.dimen.dp_88),
-                        start = dimensionResource(R.dimen.dp_16),
-                        end = dimensionResource(R.dimen.dp_16)
+            uiState.notes.isEmpty() -> {
+                Text(
+                    text = stringResource(R.string.empty_notes_msg),
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .padding(innerPadding)
+                        .fillMaxSize()
+                        .wrapContentSize(Alignment.Center)
+                        .padding(
+                            bottom = dimensionResource(R.dimen.dp_88),
+                            start = dimensionResource(R.dimen.dp_16),
+                            end = dimensionResource(R.dimen.dp_16)
+                        )
+                )
+            }
+            else -> {
+                Column(
+                    modifier = Modifier.padding(innerPadding)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        if (uiState.notes.size > 1) {
+                            SortButton(
+                                label = stringResource(R.string.title),
+                                isSelected = uiState.sortByColumn == NotesColumn.TITLE,
+                                direction = uiState.titleSortDirection,
+                                onClick = { viewModel.onSortButtonClicked(NotesColumn.TITLE) }
+                            )
+                            SortButton(
+                                label = stringResource(R.string.date),
+                                isSelected = uiState.sortByColumn == NotesColumn.TIMESTAMP,
+                                direction = uiState.timeStampSortDirection,
+                                onClick = { viewModel.onSortButtonClicked(NotesColumn.TIMESTAMP) }
+                            )
+                        }
+                        Spacer(modifier = Modifier.weight(1f))
+                        IconButton(
+                            onClick = { viewModel.toggleViewMode() }
+                        ) {
+                            Icon(
+                                painter = when (uiState.viewMode) {
+                                    ViewMode.LINEAR_LIST -> painterResource(R.drawable.ic_view_grid)
+                                    else -> painterResource(R.drawable.ic_view_list)
+                                },
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                contentDescription = when (uiState.viewMode) {
+                                    ViewMode.LINEAR_LIST -> stringResource(R.string.grid_view)
+                                    else -> stringResource(R.string.list_view)
+                                }
+                            )
+                        }
+                    }
+                    Notes(
+                        uiState = uiState,
+                        onItemClicked = navigateToNoteDetails
                     )
-            )
+                }
+            }
         }
     }
 }
