@@ -21,7 +21,19 @@ class HomeScreenViewModel(
 
 
     init {
+        getUserPreferences()
         getNotes()
+    }
+
+    private fun getUserPreferences() {
+        viewModelScope.launch {
+            userPreferencesRepository.viewModeLayout
+                .collect { viewModeLayout ->
+                    _homeScreenUiState.value = _homeScreenUiState.value.copy(
+                        viewMode = viewModeLayout
+                    )
+                }
+        }
     }
 
     private fun getNotes() {
@@ -71,12 +83,14 @@ class HomeScreenViewModel(
     }
 
     fun toggleViewMode() {
-        _homeScreenUiState.value = _homeScreenUiState.value.copy(
-            viewMode = when(_homeScreenUiState.value.viewMode) {
-                ViewMode.STAGGERED_GRID -> ViewMode.LINEAR_LIST
-                else -> ViewMode.STAGGERED_GRID
-            }
-        )
+        viewModelScope.launch {
+            userPreferencesRepository.setViewModeLayout(
+                viewMode = when (_homeScreenUiState.value.viewMode) {
+                    ViewMode.STAGGERED_GRID -> ViewMode.LINEAR_LIST
+                    else -> ViewMode.STAGGERED_GRID
+                }
+            )
+        }
     }
 
 }
