@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
@@ -32,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.notes.AppBar
@@ -113,6 +115,21 @@ fun HomeScreen(
                     onItemClicked = navigateToNoteDetails
                 )
             }
+        } else {
+            Text(
+                text = stringResource(R.string.empty_notes_msg),
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize()
+                    .wrapContentSize(Alignment.Center)
+                    .padding(
+                        bottom = dimensionResource(R.dimen.dp_88),
+                        start = dimensionResource(R.dimen.dp_16),
+                        end = dimensionResource(R.dimen.dp_16)
+                    )
+            )
         }
     }
 }
