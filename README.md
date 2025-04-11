@@ -14,3 +14,26 @@ The Android Notes App is a simple, modern note-taking application built with Jet
 - **MVVM**: Structuring the app to separate UI, business logic, and data layers, allowing for better testability and easier maintenance.
 - **Clean Architecture**: Organizing the app in a modular way, ensuring separation of concerns and improving code scalability and maintainability.
 - **Compose Navigation**: Managing screen transitions and passing data between composables with ease.
+
+## Screenshots
+
+<p align="center">
+  <img src="assets/01.png" width="150" />&nbsp;&nbsp;
+  <img src="assets/021.png" width="150" />&nbsp;&nbsp;
+  <img src="assets/022.png" width="150" />&nbsp;&nbsp;
+  <img src="assets/03.png" width="150" />
+</p>
+
+<p align="center">
+  <img src="assets/041.png" width="150" />&nbsp;&nbsp;
+  <img src="assets/042.png" width="150" />&nbsp;&nbsp;
+  <img src="assets/043.png" width="150" />&nbsp;&nbsp;
+  <img src="assets/05.png" width="150" />
+</p>
+
+<p align="center">
+  <img src="assets/08.png" width="150" />&nbsp;&nbsp;
+  <img src="assets/09.png" width="150" />&nbsp;&nbsp;
+  <img src="assets/10.png" width="150" />
+</p>
+
