@@ -7,6 +7,7 @@
     <string name="list_view">List View</string>
     <string name="grid_view">Grid View</string>
     <string name="create_new_note">Create New Note</string>
+    <string name="empty_notes_msg">Don\'t have any notes yet? Tap the + button to get started</string>
 
 <!--    Note Details-->
     <string name="delete">Delete</string>

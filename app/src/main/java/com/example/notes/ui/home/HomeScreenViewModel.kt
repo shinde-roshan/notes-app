@@ -6,19 +6,21 @@ import com.example.notes.data.NotesRepository
 import com.example.notes.data.UserPreferencesRepository
 import com.example.notes.database.NotesColumn
 import com.example.notes.database.SortDirection
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class HomeScreenViewModel(
     private val notesRepository: NotesRepository,
     private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
-    private val _homeScreenUiState =
-        MutableStateFlow<HomeScreenUiState>(HomeScreenUiState())
+    private val _homeScreenUiState = MutableStateFlow(HomeScreenUiState())
     val homeScreenUiState: StateFlow<HomeScreenUiState> = _homeScreenUiState
 
+    private var jobCurrNotesFlow: Job? = null
 
     init {
         getUserPreferences()
@@ -37,7 +39,11 @@ class HomeScreenViewModel(
     }
 
     private fun getNotes() {
-        viewModelScope.launch {
+        //to avoid creating multiple active collectors
+        //flow collects emitted values until the launched coroutine is active
+        jobCurrNotesFlow?.cancel()
+
+        jobCurrNotesFlow = viewModelScope.launch {
             notesRepository.getNotes(
                 column = _homeScreenUiState.value.sortByColumn,
                 sortDirection = when (_homeScreenUiState.value.sortByColumn) {
@@ -45,13 +51,20 @@ class HomeScreenViewModel(
                     else -> _homeScreenUiState.value.titleSortDirection
                 }
             )
+                .onStart {
+                    _homeScreenUiState.value = _homeScreenUiState.value.copy(
+                        isLoading = true
+                    )
+                }
                 .catch {
                     _homeScreenUiState.value = _homeScreenUiState.value.copy(
+                        isLoading = false,
                         notes = listOf()
                     )
                 }
                 .collect { notes ->
                     _homeScreenUiState.value = _homeScreenUiState.value.copy(
+                        isLoading = false,
                         notes = notes
                     )
                 }

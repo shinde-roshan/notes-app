@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
@@ -17,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.Add
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -32,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.notes.AppBar
@@ -70,45 +73,75 @@ fun HomeScreen(
         },
         modifier = Modifier.fillMaxSize()
     ) { innerPadding ->
-        Column(
-            modifier = Modifier.padding(innerPadding)
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                SortButton(
-                    label = stringResource(R.string.title),
-                    isSelected = uiState.sortByColumn == NotesColumn.TITLE,
-                    direction = uiState.titleSortDirection,
-                    onClick = { viewModel.onSortButtonClicked(NotesColumn.TITLE) }
+        when {
+            uiState.isLoading -> {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .padding(innerPadding)
+                        .fillMaxSize()
+                        .wrapContentSize(Alignment.Center)
                 )
-                SortButton(
-                    label = stringResource(R.string.date),
-                    isSelected = uiState.sortByColumn == NotesColumn.TIMESTAMP,
-                    direction = uiState.timeStampSortDirection,
-                    onClick = { viewModel.onSortButtonClicked(NotesColumn.TIMESTAMP) }
+            }
+            uiState.notes.isEmpty() -> {
+                Text(
+                    text = stringResource(R.string.empty_notes_msg),
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .padding(innerPadding)
+                        .fillMaxSize()
+                        .wrapContentSize(Alignment.Center)
+                        .padding(
+                            bottom = dimensionResource(R.dimen.dp_88),
+                            start = dimensionResource(R.dimen.dp_16),
+                            end = dimensionResource(R.dimen.dp_16)
+                        )
                 )
-                Spacer(modifier = Modifier.weight(1f))
-                IconButton(
-                    onClick = { viewModel.toggleViewMode() }
+            }
+            else -> {
+                Column(
+                    modifier = Modifier.padding(innerPadding)
                 ) {
-                    Icon(
-                        painter = when (uiState.viewMode) {
-                            ViewMode.LINEAR_LIST -> painterResource(R.drawable.ic_view_grid)
-                            else -> painterResource(R.drawable.ic_view_list)
-                        },
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        contentDescription = when (uiState.viewMode) {
-                            ViewMode.LINEAR_LIST -> stringResource(R.string.grid_view)
-                            else -> stringResource(R.string.list_view)
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        if (uiState.notes.size > 1) {
+                            SortButton(
+                                label = stringResource(R.string.title),
+                                isSelected = uiState.sortByColumn == NotesColumn.TITLE,
+                                direction = uiState.titleSortDirection,
+                                onClick = { viewModel.onSortButtonClicked(NotesColumn.TITLE) }
+                            )
+                            SortButton(
+                                label = stringResource(R.string.date),
+                                isSelected = uiState.sortByColumn == NotesColumn.TIMESTAMP,
+                                direction = uiState.timeStampSortDirection,
+                                onClick = { viewModel.onSortButtonClicked(NotesColumn.TIMESTAMP) }
+                            )
                         }
+                        Spacer(modifier = Modifier.weight(1f))
+                        IconButton(
+                            onClick = { viewModel.toggleViewMode() }
+                        ) {
+                            Icon(
+                                painter = when (uiState.viewMode) {
+                                    ViewMode.LINEAR_LIST -> painterResource(R.drawable.ic_view_grid)
+                                    else -> painterResource(R.drawable.ic_view_list)
+                                },
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                contentDescription = when (uiState.viewMode) {
+                                    ViewMode.LINEAR_LIST -> stringResource(R.string.grid_view)
+                                    else -> stringResource(R.string.list_view)
+                                }
+                            )
+                        }
+                    }
+                    Notes(
+                        uiState = uiState,
+                        onItemClicked = navigateToNoteDetails
                     )
                 }
             }
-            Notes(
-                uiState = uiState,
-                onItemClicked = navigateToNoteDetails
-            )
         }
     }
 }
